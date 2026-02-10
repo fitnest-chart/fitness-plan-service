@@ -1,0 +1,43 @@
+replicaCount: 1
+image:
+  repository: ghcr.io/fitnest-backend/fitness-plan-service
+  tag: "latest"
+  pullPolicy: IfNotPresent
+  imagePullSecrets:
+    - name: ghcr-secret
+service:
+  type: ClusterIP
+  port: 8080
+istio:
+  enabled: true
+  host: "fitness-plan-service"
+  mtls:
+    mode: STRICT
+  authorization:
+    internalCallers:
+      - "cluster.local/ns/fitnest-dev/sa/identity-service"
+      - "cluster.local/ns/fitnest-dev/sa/user-service"
+      - "cluster.local/ns/fitnest-dev/sa/api-gateway"
+env:
+  SPRING_PROFILES_ACTIVE: dev
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgresql-fitness-plan.fitnest-dev.svc.cluster.local:5432/fitnest_fitness_plan?sslmode=disable"
+  SPRING_DATASOURCE_USERNAME: "fitnest_fitness_plan"
+  SPRING_DATASOURCE_PASSWORD: "fitness_plan_password_123"
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
+  SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+  SPRING_REDIS_HOST: "redis.fitnest-dev.svc.cluster.local"
+  SPRING_REDIS_PORT: "6379"
+  SPRING_REDIS_PASSWORD: ""
+  KAFKA_BOOTSTRAP_SERVERS: "kafka-service.fitnest-dev.svc.cluster.local:9092"
+  JWT_SECRET: "your-jwt-secret-change-in-production"
+  JWT_ISSUER: "fitnest"
+  IDENTITY_SERVICE_URL: "http://identity-service:8080"
+  MEDIA_SERVICE_URL: "http://media-service:8086"
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
