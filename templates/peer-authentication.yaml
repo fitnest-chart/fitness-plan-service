@@ -1,8 +1,8 @@
 {{- if .Values.istio.enabled }}
-apiVersion: networking.istio.io/v1
+apiVersion: security.istio.io/v1beta1
 kind: PeerAuthentication
 metadata:
-  name: {{ include "fitness-plan-service.fullname" . }}
+  name: {{ include "fitness-plan-service.fullname" . }}-mtls
   labels:
     {{- include "fitness-plan-service.labels" . | nindent 4 }}
 spec:
@@ -10,5 +10,5 @@ spec:
     matchLabels:
       {{- include "fitness-plan-service.selectorLabels" . | nindent 6 }}
   mtls:
-    mode: {{ .Values.istio.mtls.mode }}
+    mode: {{ .Values.istio.mtls.mode | default "STRICT" }}
 {{- end }}
