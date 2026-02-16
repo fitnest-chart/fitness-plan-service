@@ -18,6 +18,12 @@ istio:
       - "cluster.local/ns/fitnest-dev/sa/identity-service"
       - "cluster.local/ns/fitnest-dev/sa/user-service"
       - "cluster.local/ns/fitnest-dev/sa/api-gateway"
+hpa:
+  enabled: false
+  minReplicas: "1"
+  maxReplicas: "3"
+  cpuUtilization: "90"
+  memoryUtilization: "450Mi"
 env:
   SPRING_PROFILES_ACTIVE: dev
   SPRING_DATASOURCE_URL: "jdbc:postgresql://postgresql-fitness-plan:5432/fitnest_fitness_plan?sslmode=disable"
@@ -41,10 +47,10 @@ env:
 
 
 resources:
-  requests:
-    cpu: 100m
-    memory: 256Mi
+  enabled: true
   limits:
-    cpu: 500m
     memory: 512Mi
-
+    cpu: 0.5
+  requests:
+    cpu: 0.25
+    memory: 256Mi
