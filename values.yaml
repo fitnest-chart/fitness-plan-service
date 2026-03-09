@@ -41,6 +41,9 @@ env:
   JWT_ISSUER: "fitnest"
   IDENTITY_SERVICE_URL: "http://identity-service:8080"
   STORAGE_SERVICE_URL: "http://storage-service:8080"
+  # Optional: enable gRPC-based storage client instead of HTTP. When true, set STORAGE_GRPC_ADDRESS.
+  USE_GRPC_STORAGE: "false"
+  STORAGE_GRPC_ADDRESS: "dns:///storage-service.fitnest-dev.svc.cluster.local:9090"
   identity-service: "cluster.local/ns/fitnest-dev/sa/identity-service"
   user-service: "cluster.local/ns/fitnest-dev/sa/user-service"
   api-gateway: "cluster.local/ns/fitnest-dev/sa/api-gateway"
